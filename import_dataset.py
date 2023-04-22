@@ -1,8 +1,7 @@
 import argparse
 import glob
-from PIL import Image
 from postgress_connection import getConnection
-from img_to_vec import imageToVec
+from img_to_vec import image_to_vec
 
 ap = argparse.ArgumentParser()
 ap.add_argument(
@@ -17,14 +16,13 @@ cursor = connection.cursor()
 
 for imagePath in glob.glob(args["dataset"] + "/*.png"):
     filename = imagePath[imagePath.rfind("/") + 1:]
-    img = Image.open(filename)
-    vec = imageToVec(img)
+    vec = image_to_vec(filename)
+
     print('------ Importing Image: ', filename)
-    print(vec)
 
     cursor.execute(
         """
-            INSERT INTO IMAGES(NAME, HISTOGRAM) VALUES(%s, %s)
+            INSERT INTO IMAGES_DATASET(NAME, COLOR_HISTOGRAM_VECTOR) VALUES(%s, %s)
             """,
         (filename, vec))
     connection.commit()

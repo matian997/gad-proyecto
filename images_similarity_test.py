@@ -1,5 +1,6 @@
 import argparse
 import glob
+import time
 from images_similarity_search import images_similarity_search
 
 ap = argparse.ArgumentParser()
@@ -20,15 +21,19 @@ args = vars(ap.parse_args())
 
 i = 0
 length = glob.glob(args["directory"] + "/*.png").__len__()
-
+start = time.time()
 for imagePath in glob.glob(args["directory"] + "/*.png"):
-    filename = imagePath[imagePath.rfind("/") + 1:]
-    original_filename = imagePath[imagePath.rfind("_") + 1:]
-    results = images_similarity_search(filename, args["radius"])
+    filename = filename = imagePath[imagePath.rfind("\\") + 1:]
+    results = images_similarity_search(imagePath, args["radius"])
 
-    if any(map(lambda x: x[0][x[0].rfind("/")+1:] == original_filename, results)):
+    list_result = list(
+        map(lambda x: x[0][x[0].rfind("\\")+1:], results))
+
+    if any(map(lambda x: x[0][x[0].rfind("\\")+1:] == filename, results)) and list_result.index(filename) < 1:
         i += 1
 
+end = time.time()
+print(end - start)
 print('Success: ', i)
 print('Total: ', length)
 print('Result: ', i/length)

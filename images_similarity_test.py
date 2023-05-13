@@ -1,6 +1,5 @@
 import argparse
 import glob
-from PIL import Image
 from images_similarity_search import images_similarity_search
 
 ap = argparse.ArgumentParser()

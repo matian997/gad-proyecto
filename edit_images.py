@@ -1,4 +1,4 @@
-import argparse
+# import argparse
 import glob
 import random
 from enum import Enum
@@ -39,48 +39,47 @@ def image_enhancer(img: Image, operation: Operations) -> any:
         return ImageEnhance.Color(img)
 
 
-ap = argparse.ArgumentParser()
-ap.add_argument(
-    "-d",
-    "--directory",
-    required=True,
-    help="Path to the directory of images")
+# ap = argparse.ArgumentParser()
+# ap.add_argument(
+#     "-d",
+#     "--directory",
+#     required=True,
+#     help="Path to the directory of images")
 
-ap.add_argument(
-    "-n",
-    "--number",
-    required=True,
-    help="Number of images")
+# ap.add_argument(
+#     "-n",
+#     "--number",
+#     required=True,
+#     help="Number of images")
 
-ap.add_argument(
-    "-o",
-    "--output",
-    required=True,
-    help="Objecto")
+# ap.add_argument(
+#     "-o",
+#     "--output",
+#     required=True,
+#     help="Objecto")
 
 
-args = vars(ap.parse_args())
+# args = vars(ap.parse_args())
 
 grade = 15
 brightness = 1.5
 saturation = 1.5
 lightness = 1.5
 
-for imagePath in random.choices(glob.glob(args["directory"] + "/*.png"), k=int(args["number"])):
-    filename = imagePath[imagePath.rfind("\\") + 1:]
-    img = Image.open(imagePath)
-    operation = randomize_int_range(len(Operations))
 
-    if operation == Operations.ROTATE.value:
-        print("rotate")
-        img = rotate_image(img)
+def edited_images(directory: str, output: str, number: int):
+    for imagePath in random.choices(glob.glob(directory + "/*.png"), k=int(number)):
+        filename = imagePath[imagePath.rfind("\\") + 1:]
+        img = Image.open(imagePath)
+        operation = randomize_int_range(len(Operations))
 
-    if operation == Operations.BRIGHTEN.value:
-        print("brighten")
-        img = brighten_image(img)
+        if operation == Operations.ROTATE.value:
+            img = rotate_image(img)
 
-    if operation == Operations.SATURATE.value:
-        print("saturate")
-        img = saturate_image(img)
+        if operation == Operations.BRIGHTEN.value:
+            img = brighten_image(img)
 
-    img.save(f'{args["output"]}/{filename}')
+        if operation == Operations.SATURATE.value:
+            img = saturate_image(img)
+
+        img.save(f'{output}/{filename}')

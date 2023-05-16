@@ -1,3 +1,4 @@
 images/*
 images_test/*
 __pycache__/*
+imageSimilarityQueryResults.txt

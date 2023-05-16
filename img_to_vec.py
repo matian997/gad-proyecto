@@ -217,11 +217,6 @@ def save_last_selected_vector(vector: list[int]):
     lastSelectedVector = vector
 
 def search_color_in_palette(vector: list[int], matching_color: Literal) -> any:
-    if (lastPaletteColor == {}):
-        save_last_palette_color_for_color({})
-    if (lastSelectedVector == []):
-        save_last_selected_vector([])
-
     if ((lastPaletteColor != {} and lastSelectedVector != []) and ((vector==lastSelectedVector).all() or (distance(vector, lastSelectedVector) < 10))):
         return lastPaletteColor
     
@@ -234,7 +229,7 @@ def search_color_in_palette(vector: list[int], matching_color: Literal) -> any:
     for color in paletteColor['children']:
         p_distance = distance(vector, color['values'])
 
-        if (p_distance < 5):
+        if (p_distance < 10):
            return color
 
         if p_distance < distanceResult or colorResult == {}:

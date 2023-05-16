@@ -21,19 +21,22 @@ args = vars(ap.parse_args())
 
 i = 0
 length = glob.glob(args["directory"] + "/*.png").__len__()
-start = time.time()
+
+# Initialize 10 positions since is the limit as per the database.
+similarity_search_positions_list = [0] * 10
+
 for imagePath in glob.glob(args["directory"] + "/*.png"):
-    filename = filename = imagePath[imagePath.rfind("\\") + 1:]
+    imageFileName = imagePath[imagePath.rfind("\\") + 1:]
+
     results = images_similarity_search(imagePath, args["radius"])
+    list_result = list(map(lambda x: x[0][x[0].rfind("\\")+1:], results))
 
-    list_result = list(
-        map(lambda x: x[0][x[0].rfind("\\")+1:], results))
-
-    if any(map(lambda x: x[0][x[0].rfind("\\")+1:] == filename, results)) and list_result.index(filename) < 1:
+    if any(map(lambda x: x[0][x[0].rfind("\\")+1:] == imageFileName, results)):
+        similarity_search_positions_list[list_result.index(imageFileName)] += 1
         i += 1
 
-end = time.time()
-print(end - start)
 print('Success: ', i)
 print('Total: ', length)
 print('Result: ', i/length)
+queryResults = open("imageSimilarityQueryResults.txt", 'w+')
+queryResults.write(f'Positions: [ {" ".join(str(x) for x in similarity_search_positions_list)} ] \n')

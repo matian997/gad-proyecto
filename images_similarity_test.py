@@ -42,7 +42,7 @@ ap.add_argument(
 args = vars(ap.parse_args())
 queryResults = open("imageSimilarityQueryResults.txt", 'w+')
 for j in range(int(args["iterations"])):
-    print("Jiteration: ", j)
+    print("Iteration: ", j)
     if os.path.exists(args["output"]):
         shutil.rmtree(args["output"])
 

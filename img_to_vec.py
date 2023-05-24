@@ -121,16 +121,18 @@ COLOR_PALETTE = [
     ]},
     {'values': Color.GREEN.value, 'children': [
         # green
-        {'name': 58, 'values': [0, 117, 95]},
-        {'name': 59, 'values': [2, 124, 110]},
-        {'name': 60, 'values': [14, 72, 59]},
-        {'name': 61, 'values': [24, 49, 0]},
-        {'name': 62, 'values': [66, 167, 12]},
-        {'name': 63, 'values': [100, 138, 71]},
-        {'name': 64, 'values': [144, 155, 105]},
-        {'name': 65, 'values': [158, 186, 72]},
-        {'name': 84, 'values': [56, 169, 150]},
-
+        {'name': 69, 'values': [0, 117, 95]},
+        {'name': 70, 'values': [2, 124, 110]},
+        {'name': 71, 'values': [14, 72, 59]},
+        {'name': 72, 'values': [24, 49, 0]},
+        {'name': 73, 'values': [66, 167, 12]},
+        {'name': 74, 'values': [100, 138, 71]},
+        {'name': 75, 'values': [144, 155, 105]},
+        {'name': 76, 'values': [158, 186, 72]},
+        {'name': 77, 'values': [56, 169, 150]},
+        {'name': 78, 'values': [70, 63, 17]},
+        {'name': 79, 'values': [124, 184, 127]},
+        {'name': 80, 'values': [59, 99, 31]},
     ]},
     {'values': Color.WHITE.value, 'children': [
         # White
@@ -165,7 +167,6 @@ COLOR_PALETTE = [
         {'name': 100, 'values': [22, 65, 69]},
     ]}
 ]
-
 
 MESH_SIZE = 3
 DEFAULT_IMAGE_WIDTH = 200
@@ -321,7 +322,7 @@ def split(filename: str) -> list[Mat]:
     img = cv2.imread(filename)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     # img = center_crop(img, [DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT])
-    img = image_resize(img, DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT)
+    # img = image_resize(img, DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT)
 
     w = int(img.shape[0]/MESH_SIZE)
     h = int(img.shape[1]/MESH_SIZE)

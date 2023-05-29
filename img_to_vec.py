@@ -21,6 +21,7 @@ class Color(Enum):
     LIGHTBLUE = 10
     PURPLE = 11
 
+
 COLOR_PALETTE = [
     {'values': Color.BROWN.value, 'children': [
         # brown
@@ -31,7 +32,7 @@ COLOR_PALETTE = [
         {'name': 4, 'values': [134, 62, 2]},
         {'name': 5, 'values': [140, 97, 66]},
         {'name': 6, 'values': [160, 74, 10]},
-        
+
 
         # Lightbrown
         {'name': 7, 'values': [185, 134, 87]},
@@ -58,7 +59,7 @@ COLOR_PALETTE = [
         {'name': 22, 'values': [210, 111, 98]},
         {'name': 23, 'values': [211, 112, 99]},
     ]},
-    {'values': Color.YELLOW.value, 'children': [   
+    {'values': Color.YELLOW.value, 'children': [
         # yellow
         {'name': 24, 'values': [215, 191, 85]},
         {'name': 25, 'values': [219, 180, 4]},
@@ -66,7 +67,7 @@ COLOR_PALETTE = [
         {'name': 27, 'values': [220, 198, 94]},
         {'name': 28, 'values': [226, 163, 27]},
     ]},
-    {'values': Color.ORANGE.value, 'children': [  
+    {'values': Color.ORANGE.value, 'children': [
         # Orange
         {'name': 29, 'values': [186, 78, 13]},
         {'name': 30, 'values': [218, 164, 32]},
@@ -84,9 +85,9 @@ COLOR_PALETTE = [
         {'name': 39, 'values': [126, 186, 202]},
         {'name': 40, 'values': [133, 190, 201]},
     ]},
-    {'values': Color.BLUE.value, 'children': [  
+    {'values': Color.BLUE.value, 'children': [
         # Blue
-       {'name': 41, 'values': [11, 127, 196]},
+        {'name': 41, 'values': [11, 127, 196]},
         {'name': 42, 'values': [19, 80, 177]},
         {'name': 43, 'values': [28, 3, 100]},
         {'name': 44, 'values': [32, 140, 198]},
@@ -101,7 +102,7 @@ COLOR_PALETTE = [
         {'name': 53, 'values': [71, 137, 146]},
         {'name': 54, 'values': [49, 61, 131]},
     ]},
-    {'values': Color.PURPLE.value, 'children': [  
+    {'values': Color.PURPLE.value, 'children': [
         # Purple
         {'name': 55, 'values': [76, 55, 113]},
         {'name': 56, 'values': [88, 69, 122]},
@@ -153,7 +154,7 @@ COLOR_PALETTE = [
         {'name': 91, 'values': [161, 158, 162]},
         {'name': 92, 'values': [181, 182, 185]},
         {'name': 93, 'values': [85, 105, 104]},
-        
+
     ]},
     {'values': Color.BLACK.value, 'children': [
         # black
@@ -174,17 +175,20 @@ DEFAULT_IMAGE_HEIGHT = 200
 lastPaletteColor = {}
 lastSelectedVector = []
 
+
 def get_color_palette_length():
     i = 0
     len = 0
-    paletteLength = COLOR_PALETTE.__len__() 
+    paletteLength = COLOR_PALETTE.__len__()
     while i < paletteLength:
         len += COLOR_PALETTE[i]['children'].__len__()
         i += 1
     return len
 
+
 global colorPaletteLength
 colorPaletteLength = get_color_palette_length()
+
 
 def image_to_vec(filename: str) -> list[int]:
     vector = []
@@ -206,7 +210,7 @@ def child_image_to_vec(img: Mat) -> list[int]:
 def match_image_color_with_palette_color(vector: list[int]) -> any:
     # Convert RGB color space to HLS color space.
     h, l, s = colorsys.rgb_to_hls(vector[0]/255, vector[1]/255, vector[2]/255)
-    # Colorsys returns values between 0 and 1, so we multiply Hue component by 360 to use the whole spectrum. 
+    # Colorsys returns values between 0 and 1, so we multiply Hue component by 360 to use the whole spectrum.
     h = h*360
 
     # Match against blacks palette
@@ -220,25 +224,25 @@ def match_image_color_with_palette_color(vector: list[int]) -> any:
         # and ((vector[0] <= 30 and vector[1] <= 30 and vector[2] <= 30))):
         if (h > 280 and vector[2] >= vector[0] or vector[0] >= vector[2]):
             return search_color_in_palette(vector, Color.PURPLE.value)
-    
+
     # Match against grays palette
     if (((l > 0.2 and l <= 0.75) and (s < 0.1)) or (s < .25 and l < .25)):
-           if ((h >= 230 and h <= 300) and vector[2] >= vector[0] or vector[0] >= vector[2]):
+        if ((h >= 230 and h <= 300) and vector[2] >= vector[0] or vector[0] >= vector[2]):
             return search_color_in_palette(vector, Color.PURPLE.value)
-        # ((vector[0] < 190 and vector[1] < 190 and vector[2] < 190)) and 
+        # ((vector[0] < 190 and vector[1] < 190 and vector[2] < 190)) and
         # ((vector[0] > 15 and vector[1] > 15 and vector[2] > 15)))
-            return search_color_in_palette(vector, Color.GREY.value)
-        
+        return search_color_in_palette(vector, Color.GREY.value)
+
     # Match against whites palette
-    if ((l > 0.75)): 
+    if ((l > 0.75)):
         # and ((vector[0] >= 190 and vector[1] >= 190 and vector[2] >= 190))):
         return search_color_in_palette(vector, Color.WHITE.value)
-        
+
     # Match against reds palette
     if ((h < 64) or (h >= 300)):
         if (h > 45 and h < 60 and vector[0] > 170 and vector[1] > 150):
             return search_color_in_palette(vector, Color.YELLOW.value)
-        if (h > 15 and h < 40 and  vector[0] > 220 and vector[1] > 100 and vector[2] >= 0 and vector[2] < 150):
+        if (h > 15 and h < 40 and vector[0] > 220 and vector[1] > 100 and vector[2] >= 0 and vector[2] < 150):
             return search_color_in_palette(vector, Color.ORANGE.value)
         if (h < 55 and (vector[0] > vector[1]) and (vector[1] >= vector[2])):
             return search_color_in_palette(vector, Color.BROWN.value)
@@ -246,59 +250,63 @@ def match_image_color_with_palette_color(vector: list[int]) -> any:
             return search_color_in_palette(vector, Color.PINK.value)
         if ((h < 5 or h >= 300) and ((vector[0] >= vector[2]) or (vector[2] >= vector[0])) and (s < 0.95)):
             return search_color_in_palette(vector, Color.PURPLE.value)
-        
+
         return search_color_in_palette(vector, Color.RED.value)
-       
+
     # Match against greens palette
     if ((h >= 64 and h <= 170)):
         return search_color_in_palette(vector, Color.GREEN.value)
-    
+
     # Match against blues palette
     if ((h > 170 and h <= 300)):
         if (vector[0] < 140 and vector[1] > 180 and vector[2] > 190):
             return search_color_in_palette(vector, Color.LIGHTBLUE.value)
-        if (h < 270 and (vector[2] > vector[1])):  
+        if (h < 270 and (vector[2] > vector[1])):
             return search_color_in_palette(vector, Color.BLUE.value)
         if ((h >= 270 and h <= 300) and vector[2] >= vector[0] or vector[0] >= vector[2]):
             return search_color_in_palette(vector, Color.PURPLE.value)
-        
+
         return search_color_in_palette(vector, Color.BLUE.value)
 
-    # If no color matches, return yellow by default, since is the most representative color in the set.    
+    # If no color matches, return yellow by default, since is the most representative color in the set.
     return search_color_in_palette(vector, Color.YELLOW.value)
-    
+
 
 def save_last_palette_color_for_color(paletteColor: dict):
     global lastPaletteColor
     lastPaletteColor = paletteColor
 
+
 def save_last_selected_vector(vector: list[int]):
     global lastSelectedVector
     lastSelectedVector = vector
 
+
 def search_color_in_palette(vector: list[int], matching_color: Literal) -> any:
-    if ((lastPaletteColor != {} and lastSelectedVector != []) and ((vector==lastSelectedVector).all())):
+    if ((lastPaletteColor != {} and lastSelectedVector != []) and ((vector == lastSelectedVector).all())):
         return lastPaletteColor
-    
+
     distanceResult = 0
     colorResult = {}
 
     # Get the palette color dictionary that matches with the provided color.
-    paletteColor = [x for x in COLOR_PALETTE if x['values'] == matching_color][0]
+    paletteColor = [
+        x for x in COLOR_PALETTE if x['values'] == matching_color][0]
 
     for color in paletteColor['children']:
         p_distance = distance(vector, color['values'])
 
         if (p_distance < 5):
-           return color
+            return color
 
         if p_distance < distanceResult or colorResult == {}:
             distanceResult = p_distance
             colorResult = color
-            
+
     save_last_palette_color_for_color(colorResult)
     save_last_selected_vector(vector)
     return colorResult
+
 
 def distance(element_1: list[int], element_2: list[int]) -> float:
     result = 0
@@ -318,7 +326,8 @@ def map_image_to_palette_color(filename: str):
     for subimg in img:
         j = 0
         for vec in subimg:
-            mapped_image[i, j] = match_image_color_with_palette_color(vec)['values']
+            mapped_image[i, j] = match_image_color_with_palette_color(vec)[
+                'values']
             j += 1
         i += 1
 
